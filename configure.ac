@@ -191,7 +191,7 @@ dnl optipng
 AC_PATH_PROG([OPTIPNG], [optipng], [0])
 
 dnl Libre Office Draw
-AC_PATH_PROG([OODRAW], [lodraw], [0])
+AC_PATH_PROGS([OODRAW], [lodraw oodraw], [0])
 
 dnl pdffonts
 AC_PATH_PROG([PDFFONTS], [pdffonts], [0])
