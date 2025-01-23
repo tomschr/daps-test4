@@ -70,6 +70,15 @@ if DIST_DEBIAN
   DAPS_CATALOG_TEMPLATE := etc/catalog.debian
 endif
 
+#------------------------
+# Saxon
+SAXON_CONFIG := etc/saxon/saxon.conf
+if HAS_SAXON
+	SAXON_CONFIG_SRC := etc/saxon/saxon${SAXON_VERSION}.conf
+else
+	SAXON_CONFIG_SRC := etc/saxon/saxon10.conf
+endif
+
 # stylesheets
 if HAS_DAPS_XSL
   STYLEROOT := $(daps_xsl)
@@ -106,6 +115,7 @@ dapsconfdir    = @sysconfdir@/daps
 fopconfdir     = $(dapsconfdir)/fop
 xepconfdir     = $(dapsconfdir)/xep
 hyphendir      = $(xepconfdir)/hyphen
+saxondir       = $(dapsconfdir)/saxon
 
 catalogdir     = @sysconfdir@/xml/catalog.d
 
@@ -152,6 +162,8 @@ dist_hyphen_DATA      = $(wildcard etc/xep/hyphen/*.tex) \
 			$(wildcard etc/xep/hyphen/*.il2)
 # BASH completion
 dist_bashcompletion_DATA = bash_completion/daps
+# Saxon config file
+dist_saxon_DATA = etc/saxon/saxon${SAXON_VERSION}.conf
 
 # DATA
 if !CATALOG_EDIT
@@ -303,6 +315,10 @@ $(FOP_CONFIG): $(FOP_CONFIG_SRC) $(FOP_CONFIG_DEFAULT) $(FIRSTBUILD)
 	else \
 	  ln -sf $(notdir $(FOP_CONFIG_DEFAULT)) $@; \
 	fi
+
+
+$(SAXON_CONFIG): $(SAXON_CONFIG_SRC) $(FIRSTBUILD)
+
 
 # Create the Jing Wrapper. Debian and Ubuntu require a special version
 # (see JING_WRAPPER definitions above)

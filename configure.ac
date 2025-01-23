@@ -173,6 +173,21 @@ if test 0 = "$CATALOG"; then
 fi
 
 dnl -------------------------------------------------------------------------
+dnl It checks for each saxon major release, prioritizing saxon12
+AC_MSG_NOTICE([===== Checking for Saxon...])
+AC_PATH_PROGS([SAXON], [saxon12 saxon11 saxon10], [0])
+if test 0 = "$SAXON"; then
+   AC_MSG_WARN([saxon10, saxon11, nor saxon12 found])
+else
+  dnl Set saxon version
+  SAXON_VERSION=${SAXON##*saxon}
+  AC_MSG_NOTICE([Found saxon version $SAXON_VERSION])
+  AC_SUBST(SAXON_VERSION)
+fi
+
+AM_CONDITIONAL([HAS_SAXON], [test 0 != $SAXON])
+
+dnl -------------------------------------------------------------------------
 AC_MSG_NOTICE([===== Checking for Image conversion tools...])
 
 dnl convert (ImageMagick)
@@ -448,6 +463,14 @@ Feature                          | Enabled | Action to enable
 ..............................................................................])
 test 0 = "$HAVE_DOCBOOK_5_STYLESHEETS" && DB5=0
 test 0 = "$HAVE_JING" && DB5=0
+
+dnl Saxon
+if test 0 = "$SAXON"; then
+  AC_MSG_RESULT([Saxon support                    |    no   | install saxon10, saxon11, or
+                                 |         | saxon12])
+else
+  AC_MSG_RESULT([Saxon support                    |   yes   | (will use $SAXON)])
+fi
 
 dnl DocBook 5
 if test 0 = "$HAVE_DOCBOOK_50"; then
