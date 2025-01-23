@@ -1,0 +1,72 @@
+# https://packaging.python.org/en/latest/specifications/declaring-project-metadata/#declaring-project-metadata
+[build-system]
+requires = [
+  # "pyproject-build",
+  "setuptools>=61.0.0",
+  "wheel ~=0.37.1",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "metadatavalidator"
+readme = "README.rst"
+description = "Validates DocBook metadata (mainly in <meta/> tags)"
+# license = {file = "LICENSE.rst"}
+authors = [
+   {name = "Tom Schraitle", email = "toms@suse.de"},
+]
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: System Administrators",
+    "Framework :: Litestar",
+    "License :: OSI Approved",
+    "Operating System :: POSIX :: Linux",
+    "Environment :: Web Environment",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Documentation",
+    "Topic :: Text Processing",
+    "Topic :: Text Processing :: Markup :: XML",
+]
+dynamic = ["version"]
+dependencies = [
+  "lxml",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-cov",
+  "pytest-asyncio",
+]
+
+[project.scripts]
+metadatavalidator = "metadatavalidator.cli:main"
+
+
+[tool.setuptools.dynamic]
+version = {attr = "metadatavalidator.__version__"}
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+norecursedirs = [
+  "build",
+  ".git",
+  ".eggs/",
+  ".env/",
+  ".pyenv/",
+  ".tmp/",
+ ]
+pythonpath = ["src", "tests"]
+addopts = """
+  --no-cov-on-fail
+  --cov=metadatavalidator
+  --cov-report=term-missing
+"""
+
+
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+include = [ "pyproject.toml", "src/metadatavalidator", ]
