@@ -113,6 +113,33 @@ def test_xinclude_errors(xmlfile, messages, caplog):
     with caplog.at_level(logging.ERROR):
         result = dxwf.check_wellformedness(xmlfile, xinclude=True)
 
+    # Then
     assert len(caplog.records) == len(messages)
     for record, pattern in zip(caplog.records, messages):
         assert re.search(pattern, record.msg)
+
+
+
+def test_xinclude_file_not_found_missing_entity_file(caplog):
+    # Given
+    xmlfile = str(BADDIR /
+                  "test-xinclude-file-not-found-missing-entity-file.xml")
+    expected_return_codes = (logging.getLevelName(logging.FATAL),
+                             logging.getLevelName(logging.ERROR)
+                             )
+    
+    # When
+    with caplog.at_level(logging.ERROR):
+        result = dxwf.check_wellformedness(xmlfile, xinclude=True)
+    
+    # Then
+    assert caplog.records
+    assert len(caplog.records) == len(expected_return_codes)
+
+    records = caplog.records
+    return_codes = tuple([logging.getLevelName(getattr(logging, record.levelname))
+                          for record in caplog.records])
+    assert return_codes == expected_return_codes
+
+    # for record in caplog.records:
+    #    print(record)

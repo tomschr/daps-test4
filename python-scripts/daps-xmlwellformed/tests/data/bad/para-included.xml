@@ -1,0 +1,9 @@
+<!DOCTYPE para [
+ <!ENTITY ent SYSTEM "missing-entity.ent">
+ %ent;
+]>
+
+<para version="5.2"
+  xmlns="http://docbook.org/ns/docbook">
+
+</para>
